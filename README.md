@@ -89,6 +89,14 @@ $ pytest --md report.md
 - 1 xfailed
 - 1 xpassed
 - 1 error
+
+## Results
+
+<table>
+<thead><th>Result</th><th>Test</th><th>Duration</th></thead>
+<tbody>
+<tr><td>Failed</td><td>tests/test_generate_report.py :: test_generate_report[normal]</td><td>0.0</td></tr>
+...
 ```
 
 ## pytest-emoji

@@ -1,5 +1,6 @@
 import datetime
 import collections
+import html
 import pathlib
 import time
 
@@ -131,6 +132,41 @@ class MarkdownPlugin:
 
         return summary + outcome_text
 
+    def create_results(self):
+        outcomes = collections.OrderedDict(
+            (outcome, self.reports[outcome])
+            for outcome in OUTCOMES
+            if outcome in self.reports
+        )
+
+        results = ""
+        results += f"## Results\n\n"
+        results += "<table>\n"
+        results += "<thead><th>Result</th><th>Test</th><th>Duration</th></thead>\n"
+        results += "<tbody>\n"
+
+        for outcome, tests in outcomes.items():
+            for test in tests:
+                location = " :: ".join(
+                    location for location in test.location if isinstance(location, str)
+                )
+                outcome_text = outcome.capitalize()
+                if self.emojis_enabled:
+                    outcome_text = self.emoji_repr[outcome].strip()
+                results += f"<tr>"
+                results += f"<td>{outcome_text}</td>"
+                results += f"<td>{location}</td>"
+                results += f"<td>{test.duration:.2f}s</td>"
+                results += f"</tr>\n"
+                if test.longrepr is not None:
+                    result_cleaned = html.escape(str(test.longrepr))
+                    result_cleaned = result_cleaned.replace("\n", "<br />")
+                    results += (
+                        f"<tr><td colspan=3><pre>{result_cleaned}</pre></td></tr>\n"
+                    )
+        results += "</tbody></table>"
+        return results
+
     def pytest_sessionfinish(self, session):
         self.session_finish = time.time()
         self.session_duration = self.session_finish - self.session_start
@@ -138,11 +174,13 @@ class MarkdownPlugin:
         header = self.create_header()
         project_link = self.create_project_link()
         summary = self.create_summary()
+        results = self.create_results()
 
         report = ""
         report += f"{header}\n\n"
         report += f"{project_link}\n\n"
-        report += f"{summary}"
+        report += f"{summary}\n\n"
+        report += f"{results}"
 
         self.report_path.write_text(report, encoding="utf-8")
 
