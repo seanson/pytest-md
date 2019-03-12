@@ -157,7 +157,26 @@ def fixture_report_content(mode, now):
             - 1 🤓
             - 1 😜
             - 1 💩
-            """
+
+
+            ## Results
+
+            <table>
+            <thead><th>Result</th><th>Test</th><th>Duration</th></thead>
+            <tbody>
+            <tr><td>😿</td><td>test_emoji_tests.py :: test_failed</td><td>0.00s</td></tr>
+            <tr><td colspan=3><pre>def test_failed():<br />&gt;       assert &quot;emoji&quot; == &quot;hello world&quot;<br />E       AssertionError: assert &#x27;emoji&#x27; == &#x27;hello world&#x27;<br />E         - emoji<br />E         + hello world<br /><br />test_emoji_tests.py:5: AssertionError</pre></td></tr>
+            <tr><td>🦊</td><td>test_emoji_tests.py :: test_passed[Sara-Hello Sara!]</td><td>0.00s</td></tr>
+            <tr><td>🦊</td><td>test_emoji_tests.py :: test_passed[Mat-Hello Mat!]</td><td>0.00s</td></tr>
+            <tr><td>🦊</td><td>test_emoji_tests.py :: test_passed[Annie-Hello Annie!]</td><td>0.00s</td></tr>
+            <tr><td>🙈</td><td>test_emoji_tests.py :: test_skipped</td><td>0.00s</td></tr>
+            <tr><td colspan=3><pre>(&#x27;test_emoji_tests.py&#x27;, 17, &quot;Skipped: don&#x27;t run this test&quot;)</pre></td></tr>
+            <tr><td>🤓</td><td>test_emoji_tests.py :: test_xfailed</td><td>0.00s</td></tr>
+            <tr><td colspan=3><pre>@pytest.mark.xfail<br />    def test_xfailed():<br />&gt;       assert 1234 == 100<br />E       assert 1234 == 100<br /><br />test_emoji_tests.py:10: AssertionError</pre></td></tr>
+            <tr><td>😜</td><td>test_emoji_tests.py :: test_xpass</td><td>0.00s</td></tr>
+            <tr><td>💩</td><td>test_emoji_tests.py :: test_error</td><td>0.00s</td></tr>
+            <tr><td colspan=3><pre>@pytest.fixture<br />    def number():<br />&gt;       return 1234 / 0<br />E       ZeroDivisionError: division by zero<br /><br />test_emoji_tests.py:37: ZeroDivisionError</pre></td></tr>
+            </tbody></table>"""
         )
 
     if mode is Mode.EMOJI_VERBOSE:
@@ -179,10 +198,70 @@ def fixture_report_content(mode, now):
             - 1 xfailed 🤓
             - 1 xpassed 😜
             - 1 error 💩
-            """
+
+
+            ## Results
+
+            <table>
+            <thead><th>Result</th><th>Test</th><th>Duration</th></thead>
+            <tbody>
+            <tr><td>FAILED 😿</td><td>test_emoji_tests.py :: test_failed</td><td>0.00s</td></tr>
+            <tr><td colspan=3><pre>def test_failed():<br />&gt;       assert &quot;emoji&quot; == &quot;hello world&quot;<br />E       AssertionError: assert &#x27;emoji&#x27; == &#x27;hello world&#x27;<br />E         - emoji<br />E         + hello world<br /><br />test_emoji_tests.py:5: AssertionError</pre></td></tr>
+            <tr><td>PASSED 🦊</td><td>test_emoji_tests.py :: test_passed[Sara-Hello Sara!]</td><td>0.00s</td></tr>
+            <tr><td>PASSED 🦊</td><td>test_emoji_tests.py :: test_passed[Mat-Hello Mat!]</td><td>0.00s</td></tr>
+            <tr><td>PASSED 🦊</td><td>test_emoji_tests.py :: test_passed[Annie-Hello Annie!]</td><td>0.00s</td></tr>
+            <tr><td>SKIPPED 🙈</td><td>test_emoji_tests.py :: test_skipped</td><td>0.00s</td></tr>
+            <tr><td colspan=3><pre>(&#x27;test_emoji_tests.py&#x27;, 17, &quot;Skipped: don&#x27;t run this test&quot;)</pre></td></tr>
+            <tr><td>XFAILED 🤓</td><td>test_emoji_tests.py :: test_xfailed</td><td>0.00s</td></tr>
+            <tr><td colspan=3><pre>@pytest.mark.xfail<br />    def test_xfailed():<br />&gt;       assert 1234 == 100<br />E       assert 1234 == 100<br />E         -1234<br />E         +100<br /><br />test_emoji_tests.py:10: AssertionError</pre></td></tr>
+            <tr><td>XPASSED 😜</td><td>test_emoji_tests.py :: test_xpass</td><td>0.00s</td></tr>
+            <tr><td>ERROR 💩</td><td>test_emoji_tests.py :: test_error</td><td>0.00s</td></tr>
+            <tr><td colspan=3><pre>@pytest.fixture<br />    def number():<br />&gt;       return 1234 / 0<br />E       ZeroDivisionError: division by zero<br /><br />test_emoji_tests.py:37: ZeroDivisionError</pre></td></tr>
+            </tbody></table>"""
         )
 
-    # Return the default report for Mode.NORMAL and Mode.VERBOSE
+    if mode is Mode.VERBOSE:
+        return textwrap.dedent(
+            f"""\
+            # Test Report
+
+            *Report generated on {report_date} at {report_time} by [pytest-md]*
+
+            [pytest-md]: https://github.com/hackebrot/pytest-md
+
+            ## Summary
+
+            8 tests ran in 0.00 seconds
+
+            - 1 failed
+            - 3 passed
+            - 1 skipped
+            - 1 xfailed
+            - 1 xpassed
+            - 1 error
+
+
+            ## Results
+
+            <table>
+            <thead><th>Result</th><th>Test</th><th>Duration</th></thead>
+            <tbody>
+            <tr><td>Failed</td><td>test_emoji_tests.py :: test_failed</td><td>0.00s</td></tr>
+            <tr><td colspan=3><pre>def test_failed():<br />&gt;       assert &quot;emoji&quot; == &quot;hello world&quot;<br />E       AssertionError: assert &#x27;emoji&#x27; == &#x27;hello world&#x27;<br />E         - emoji<br />E         + hello world<br /><br />test_emoji_tests.py:5: AssertionError</pre></td></tr>
+            <tr><td>Passed</td><td>test_emoji_tests.py :: test_passed[Sara-Hello Sara!]</td><td>0.00s</td></tr>
+            <tr><td>Passed</td><td>test_emoji_tests.py :: test_passed[Mat-Hello Mat!]</td><td>0.00s</td></tr>
+            <tr><td>Passed</td><td>test_emoji_tests.py :: test_passed[Annie-Hello Annie!]</td><td>0.00s</td></tr>
+            <tr><td>Skipped</td><td>test_emoji_tests.py :: test_skipped</td><td>0.00s</td></tr>
+            <tr><td colspan=3><pre>(&#x27;test_emoji_tests.py&#x27;, 17, &quot;Skipped: don&#x27;t run this test&quot;)</pre></td></tr>
+            <tr><td>Xfailed</td><td>test_emoji_tests.py :: test_xfailed</td><td>0.00s</td></tr>
+            <tr><td colspan=3><pre>@pytest.mark.xfail<br />    def test_xfailed():<br />&gt;       assert 1234 == 100<br />E       assert 1234 == 100<br />E         -1234<br />E         +100<br /><br />test_emoji_tests.py:10: AssertionError</pre></td></tr>
+            <tr><td>Xpassed</td><td>test_emoji_tests.py :: test_xpass</td><td>0.00s</td></tr>
+            <tr><td>Error</td><td>test_emoji_tests.py :: test_error</td><td>0.00s</td></tr>
+            <tr><td colspan=3><pre>@pytest.fixture<br />    def number():<br />&gt;       return 1234 / 0<br />E       ZeroDivisionError: division by zero<br /><br />test_emoji_tests.py:37: ZeroDivisionError</pre></td></tr>
+            </tbody></table>"""
+        )
+
+    # Return the default report for Mode.NORMAL
     return textwrap.dedent(
         f"""\
         # Test Report
@@ -201,7 +280,26 @@ def fixture_report_content(mode, now):
         - 1 xfailed
         - 1 xpassed
         - 1 error
-        """
+
+
+        ## Results
+
+        <table>
+        <thead><th>Result</th><th>Test</th><th>Duration</th></thead>
+        <tbody>
+        <tr><td>Failed</td><td>test_emoji_tests.py :: test_failed</td><td>0.00s</td></tr>
+        <tr><td colspan=3><pre>def test_failed():<br />&gt;       assert &quot;emoji&quot; == &quot;hello world&quot;<br />E       AssertionError: assert &#x27;emoji&#x27; == &#x27;hello world&#x27;<br />E         - emoji<br />E         + hello world<br /><br />test_emoji_tests.py:5: AssertionError</pre></td></tr>
+        <tr><td>Passed</td><td>test_emoji_tests.py :: test_passed[Sara-Hello Sara!]</td><td>0.00s</td></tr>
+        <tr><td>Passed</td><td>test_emoji_tests.py :: test_passed[Mat-Hello Mat!]</td><td>0.00s</td></tr>
+        <tr><td>Passed</td><td>test_emoji_tests.py :: test_passed[Annie-Hello Annie!]</td><td>0.00s</td></tr>
+        <tr><td>Skipped</td><td>test_emoji_tests.py :: test_skipped</td><td>0.00s</td></tr>
+        <tr><td colspan=3><pre>(&#x27;test_emoji_tests.py&#x27;, 17, &quot;Skipped: don&#x27;t run this test&quot;)</pre></td></tr>
+        <tr><td>Xfailed</td><td>test_emoji_tests.py :: test_xfailed</td><td>0.00s</td></tr>
+        <tr><td colspan=3><pre>@pytest.mark.xfail<br />    def test_xfailed():<br />&gt;       assert 1234 == 100<br />E       assert 1234 == 100<br /><br />test_emoji_tests.py:10: AssertionError</pre></td></tr>
+        <tr><td>Xpassed</td><td>test_emoji_tests.py :: test_xpass</td><td>0.00s</td></tr>
+        <tr><td>Error</td><td>test_emoji_tests.py :: test_error</td><td>0.00s</td></tr>
+        <tr><td colspan=3><pre>@pytest.fixture<br />    def number():<br />&gt;       return 1234 / 0<br />E       ZeroDivisionError: division by zero<br /><br />test_emoji_tests.py:37: ZeroDivisionError</pre></td></tr>
+        </tbody></table>"""
     )
 
 
